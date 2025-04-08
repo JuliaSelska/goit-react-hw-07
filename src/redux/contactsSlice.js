@@ -3,29 +3,14 @@ import { deleteContact, fetchContacts } from "./contactsOps";
 import { createSelector } from "@reduxjs/toolkit";
 
 
-export const selectFilteredContacts = createSelector(
-    [selectTasks, selectTextFilter],
-    (tasks, textFilter) => {
-        console.log('selectFilteredContacts', Date.now());
-        return tasks.filter((task) =>
-            task.text.toLowerCase().includes(textFilter.toLowerCase())
-        );
-    }
-);
-
-
-
-const handlePending = state => { state.loading = true; };
+const handlePending = state => { state.loading = true };
 
 const handleRejected = (state, action) => {
     state.loading = false;
     state.error = action.payload;
 };
 
-export const selectFilteredContacts = createSelector([selectContacts], (contact) => {
-    console.log('selectContacts', Date.now());
-    return contacts.length;
-});
+
 
 const contactsSlice = createSlice({
     name: 'contacts',
@@ -34,6 +19,7 @@ const contactsSlice = createSlice({
         loading: false,
         error: null
     },
+
     extraReducers: builder => {
         builder
             .addCase(fetchContacts.pending, handlePending)
@@ -59,6 +45,11 @@ const contactsSlice = createSlice({
             .addCase(deleteContact.rejected, handleRejected)
 
     },
+});
+
+export const selectFilteredContacts = createSelector([selectContacts], (contact) => {
+    console.log('selectContacts', Date.now());
+    return contacts.length;
 });
 
 export default contactsSlice.reducer;

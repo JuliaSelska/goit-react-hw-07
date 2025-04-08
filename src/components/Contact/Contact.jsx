@@ -1,7 +1,7 @@
 import styles from './Contact.module.css';
 import { BsFillTelephoneFill, BsPersonFill } from "react-icons/bs";
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contactsSlice';
+
 
 const Contact = ({ contact }) => {
     const dispatch = useDispatch();
@@ -15,7 +15,9 @@ const Contact = ({ contact }) => {
         <div className={styles.contactCard}>
             <div className={styles.contactInfo}>
                 <p className={styles.contactItem}>
-                    <BsPersonFill className={styles.icon} /> {name}
+                    <BsPersonFill className={styles.icon} />
+                    <p>{contact.name}</p>
+                    <p>{contact.number}</p>
                 </p>
                 <p className={styles.contactItem}>
                     <BsFillTelephoneFill className={styles.icon} /> {number}

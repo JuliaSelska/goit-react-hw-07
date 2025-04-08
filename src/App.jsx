@@ -1,9 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { SearchBox } from './components/SearchBox/SearchBox';
-import { ContactForm } from './components/ContactForm/ContactForm';
-import { ContactList } from './components/ContactList/ContactList';
-import { selectLoading, selectError } from './redux/contactsSlice';
+import SearchBox from './components/SearchBox/SearchBox';
+import ContactForm from './components/ContactForm/ContactForm';
+import ContactList from './components/ContactList/ContactList';
 import styles from '../src/App.module.css'
 import { fetchContacts } from './redux/contactsOps';
 import { selectContacts, selectLoading, selectError, selectFilteredContacts } from './redux/contactsSlice';
@@ -26,7 +25,7 @@ const App = () => {
       <ContactForm />
       <SearchBox />
       <ContactList />
-      <p>{items.lenght > 0 && JSON.stringify(items, null, 2)}</p>
+      <p>{contacts.length > 0 && JSON.stringify(contacts, null, 2)}</p>
     </div>
   );
 };

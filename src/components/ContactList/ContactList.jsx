@@ -2,7 +2,7 @@ import Contact from '../Contact/Contact'
 import styles from './ContactList.module.css'
 import { useSelector } from 'react-redux';
 import { selectContacts } from '../../redux/contactsSlice';
-import { selectStatusFilter } from '../../redux/filtersSlice';
+
 
 const getVisibleContacts = (contacts, statusFilter) => {
     switch (statusFilter) {
@@ -29,8 +29,8 @@ const ContactList = () => {
     return (
         <div className={styles.ContactList}>
             {visibleContacts.length > 0 ? (
-                filteredContacts.map(({ contact }) => (
-                    <Contact key={contact.id} />
+                visibleContacts.map(({ contact }) => (
+                    <Contact key={contact.id} contact={contact} />
                 ))
             ) : (
                 <p>No contacts found</p>
