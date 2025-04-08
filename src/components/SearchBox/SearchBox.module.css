@@ -1,0 +1,23 @@
+.searchContainer {
+    width: 100%;
+    background-color: #fff;
+    margin: 20px 2px;
+    padding: 8px;
+}
+
+.label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
+
+}
+
+.input {
+    width: 100%;
+    padding: 8px;
+    margin: auto;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
