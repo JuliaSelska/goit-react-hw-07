@@ -19,20 +19,15 @@ const initialValues = {
 
 const ContactForm = () => {
     const dispatch = useDispatch();
-    const nameFieldId = useId();
-    const numberFieldId = useId();
+    // const nameFieldId = useId();
+    // const numberFieldId = useId();
 
-    const handleAddContacts = (values, { resetForm }) => {
-        const newContact = {
-            id: nanoid(),
-            name: values.name,
-            number: values.number,
-        };
-        dispatch(addContact(newContact));
-        resetForm();
-    };
-
-
+    const handleAddContacts = event => {
+        event.preventDefault();
+        const form = event.target;
+        dispatch(add(event.target.elements.value));
+        form.reset();
+    }
     return (
         <Formik
             initialValues={initialValues}
@@ -54,5 +49,6 @@ const ContactForm = () => {
         </Formik>
     );
 };
+
 
 export default ContactForm;

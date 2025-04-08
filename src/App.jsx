@@ -1,40 +1,51 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact, deleteContact } from './redux/contactsSlice';
-import { changeFilter } from './redux/filtersSlice';
-import SearchBox from './components/SearchBox/SearchBox';
-import ContactForm from './components/ContactForm/ContactForm';
-import ContactList from './components/ContactList/ContactList';
+import { useEffect } from 'react';
+import { SearchBox } from './components/SearchBox/SearchBox';
+import { ContactForm } from './components/ContactForm/ContactForm';
+import { ContactList } from './components/ContactList/ContactList';
+import { selectLoading, selectError } from './redux/contactsSlice';
 import styles from '../src/App.module.css'
+import { fetchContacts } from './redux/contactsOps';
+import { selectContacts, selectLoading, selectError, selectFilteredContacts } from './redux/contactsSlice';
 
 const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.items);
-  const filter = useSelector((state) => state.filters.name);
+  const contacts = useSelector(selectContacts);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
 
-  const handleAddContact = (newContact) => {
-    dispatch(addContact(newContact));
-  };
-
-  const handleDeleteContact = (contactId) => {
-    dispatch(deleteContact(contactId));
-  };
-
-  const handleFilterChange = (value) => {
-    dispatch(changeFilter(value));
-  };
-
-  const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>
       <h1>Phonebook</h1>
-      <ContactForm onAddContact={handleAddContact} />
+      {loading && <p>Request in progres...</p>}
+      {error && <p>Whooops, there was a problem, please reload this page!</p>}
+      <ContactForm />
       <SearchBox />
-      <ContactList contacts={filteredContacts} onDeleteContact={handleDeleteContact} />
+      <ContactList />
+      <p>{items.lenght > 0 && JSON.stringify(items, null, 2)}</p>
     </div>
   );
 };
 
 export default App;
+
+
+// const handleAddContact = (newContact) => {
+//   dispatch(addContact(newContact));
+// };
+
+// const handleDeleteContact = (contactId) => {
+//   dispatch(deleteContact(contactId));
+// };
+
+// const handleFilterChange = (value) => {
+//   dispatch(changeFilter(value));
+// };
+
+// const filteredContacts = contacts.filter((contact) =>
+//   contact.name.toLowerCase().includes(filter.toLowerCase())
+// );
