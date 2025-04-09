@@ -1,61 +1,63 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { deleteContact, fetchContacts } from "./contactsOps";
-import { createSelector } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { deleteContact, fetchContacts, addContact } from "./contactsOps";
+import { selectNameFilter } from './filtersSlice';
 
 
-const handlePending = state => { state.loading = true };
+const handlePending = (state) => {
+    state.loading = true;
+    state.error = null;
+};
 
 const handleRejected = (state, action) => {
     state.loading = false;
     state.error = action.payload;
 };
 
-
-
 const contactsSlice = createSlice({
     name: 'contacts',
     initialState: {
         items: [],
         loading: false,
-        error: null
+        error: null,
     },
-
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder
             .addCase(fetchContacts.pending, handlePending)
             .addCase(fetchContacts.fulfilled, (state, action) => {
                 state.loading = false;
-                state.error = null;
                 state.items = action.payload;
             })
             .addCase(fetchContacts.rejected, handleRejected)
-            .addCase(addContacts.pending, handlePending)
-            .addCase(addContacts.fulfilled, (state, action) => {
+
+            .addCase(addContact.pending, handlePending)
+            .addCase(addContact.fulfilled, (state, action) => {
                 state.loading = false;
-                state.error = null;
-                state.items.push(action.payload)
+                state.items.push(action.payload);
             })
-            .addCase(addContacts.rejected, handleRejected)
+            .addCase(addContact.rejected, handleRejected)
+
             .addCase(deleteContact.pending, handlePending)
             .addCase(deleteContact.fulfilled, (state, action) => {
                 state.loading = false;
-                state.erroe = null;
-                state.items = state.items.filter((contact) => contact.id !== action.payload.id);
+                state.items = state.items.filter(contact => contact.id !== action.payload.id);
             })
-            .addCase(deleteContact.rejected, handleRejected)
-
+            .addCase(deleteContact.rejected, handleRejected);
     },
 });
 
-export const selectFilteredContacts = createSelector([selectContacts], (contact) => {
-    console.log('selectContacts', Date.now());
-    return contacts.length;
-});
+// Селектори
+export const selectContacts = (state) => state.contacts.items;
+export const selectLoading = (state) => state.contacts.loading;
+export const selectError = (state) => state.contacts.error;
+
+// Мемоізований селектор
+export const selectFilteredContacts = createSelector(
+    [selectContacts, selectNameFilter],
+    (contacts, filter) => {
+        return contacts.filter(contact =>
+            contact.name.toLowerCase().includes(filter.toLowerCase())
+        );
+    }
+);
 
 export default contactsSlice.reducer;
-
-export const selectContacts = (state) => state.contacts.items;
-
-export const selectLoading = (state) => state.contacts.loading;
-
-export const selectError = (state) => state.contacts.error;

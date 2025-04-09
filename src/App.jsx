@@ -25,7 +25,7 @@ const App = () => {
       <ContactForm />
       <SearchBox />
       <ContactList />
-      <p>{contacts.length > 0 && JSON.stringify(contacts, null, 2)}</p>
+      {/* <p>{contacts.length > 0 && JSON.stringify(contacts, null, 2)}</p> */}
     </div>
   );
 };
